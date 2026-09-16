@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Purchase Entry - Stockwise</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         COMMON NAVBAR
+    ========================================== -->
+
+    {% include 'navbar.html' %}
+
+
+
+    <!-- =========================================
+         PAGE HEADER
+    ========================================== -->
+
+    <section class="page-header">
+
+        <h1>
+            Purchase Entry
+        </h1>
+
+        <p>
+            Record a new purchase and update inventory stock.
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================================
+         PURCHASE FORM
+    ========================================== -->
+
+    <section class="form-section">
+
+        <h2>
+            Add Purchase
+        </h2>
+
+
+        <form
+            action="{{ url_for('purchase_entry') }}"
+            method="POST"
+        >
+
+
+            <!-- PRODUCT ID -->
+
+            <div class="form-group">
+
+                <label for="product_id">
+                    Product ID
+                </label>
+
+                <input
+                    type="text"
+                    id="product_id"
+                    name="product_id"
+                    placeholder="Enter Product ID"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- PURCHASE QUANTITY -->
+
+            <div class="form-group">
+
+                <label for="purchase_quantity">
+                    Purchase Quantity
+                </label>
+
+                <input
+                    type="number"
+                    id="purchase_quantity"
+                    name="purchase_quantity"
+                    placeholder="Enter Purchase Quantity"
+                    min="1"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- BUTTON -->
+
+            <div class="form-buttons">
+
+                <button type="submit">
+                    Add Purchase
+                </button>
+
+            </div>
+
+
+        </form>
+
+
+
+        <!-- =====================================
+             MESSAGE
+        ====================================== -->
+
+        {% if message %}
+
+            <div class="message-box">
+
+                {{ message }}
+
+            </div>
+
+        {% endif %}
+
+
+    </section>
+
+
+
+    <!-- =========================================
+         INFORMATION
+    ========================================== -->
+
+    <section class="product-list-section">
+
+        <h2>
+            Purchase Process
+        </h2>
+
+
+        <div class="purchase-info">
+
+
+            <div class="info-card">
+
+                <h3>
+                    1. Enter Product ID
+                </h3>
+
+                <p>
+                    Enter the ID of the product for which
+                    stock is being purchased.
+                </p>
+
+            </div>
+
+
+
+            <div class="info-card">
+
+                <h3>
+                    2. Enter Quantity
+                </h3>
+
+                <p>
+                    Enter the number of units purchased.
+                </p>
+
+            </div>
+
+
+
+            <div class="info-card">
+
+                <h3>
+                    3. Stock Updated
+                </h3>
+
+                <p>
+                    The purchased quantity is automatically
+                    added to the existing inventory stock.
+                </p>
+
+            </div>
+
+
+
+            <div class="info-card">
+
+                <h3>
+                    4. Transaction Recorded
+                </h3>
+
+                <p>
+                    The purchase is automatically stored
+                    in Transaction History.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+</body>
+
+</html>

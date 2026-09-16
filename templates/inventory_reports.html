@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Inventory Reports - Stockwise</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         COMMON NAVBAR
+    ========================================== -->
+
+    {% include 'navbar.html' %}
+
+
+
+    <!-- =========================================
+         PAGE HEADER
+    ========================================== -->
+
+    <section class="page-header">
+
+        <h1>
+            Inventory Reports
+        </h1>
+
+        <p>
+            View complete inventory information and stock status.
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================================
+         REPORT SUMMARY
+    ========================================== -->
+
+    <section class="dashboard">
+
+        <div class="dashboard-cards">
+
+
+            <!-- TOTAL PRODUCTS -->
+
+            <div class="dashboard-card">
+
+                <h3>
+                    Total Products
+                </h3>
+
+                <div class="dashboard-number">
+                    {{ total_products }}
+                </div>
+
+            </div>
+
+
+
+            <!-- TOTAL STOCK -->
+
+            <div class="dashboard-card">
+
+                <h3>
+                    Total Stock
+                </h3>
+
+                <div class="dashboard-number">
+                    {{ total_quantity }}
+                </div>
+
+            </div>
+
+
+
+            <!-- LOW STOCK -->
+
+            <div class="dashboard-card">
+
+                <h3>
+                    Low Stock
+                </h3>
+
+                <div class="dashboard-number">
+                    {{ low_stock_count }}
+                </div>
+
+            </div>
+
+
+
+            <!-- INVENTORY VALUE -->
+
+            <div class="dashboard-card">
+
+                <h3>
+                    Inventory Value
+                </h3>
+
+                <div class="dashboard-number inventory-value">
+
+                    ₹{{ "%.2f"|format(total_inventory_value) }}
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         INVENTORY TABLE
+    ========================================== -->
+
+    <section class="product-list-section">
+
+        <h2>
+            Complete Inventory
+        </h2>
+
+
+        {% if products %}
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Product ID
+                        </th>
+
+                        <th>
+                            Product Name
+                        </th>
+
+                        <th>
+                            Category
+                        </th>
+
+                        <th>
+                            Price
+                        </th>
+
+                        <th>
+                            Quantity
+                        </th>
+
+                        <th>
+                            Minimum Stock
+                        </th>
+
+                        <th>
+                            Supplier
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for product in products %}
+
+                    <tr>
+
+
+                        <!-- PRODUCT ID -->
+
+                        <td>
+                            {{ product["product_id"] }}
+                        </td>
+
+
+                        <!-- PRODUCT NAME -->
+
+                        <td>
+                            {{ product["product_name"] }}
+                        </td>
+
+
+                        <!-- CATEGORY -->
+
+                        <td>
+                            {{ product["category"] }}
+                        </td>
+
+
+                        <!-- PRICE -->
+
+                        <td>
+                            ₹{{ "%.2f"|format(product["price"]) }}
+                        </td>
+
+
+                        <!-- QUANTITY -->
+
+                        <td>
+                            {{ product["quantity"] }}
+                        </td>
+
+
+                        <!-- MINIMUM STOCK -->
+
+                        <td>
+                            {{ product["minimum_stock"] }}
+                        </td>
+
+
+                        <!-- SUPPLIER -->
+
+                        <td>
+                            {{ product["supplier"] }}
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if product["quantity"] <= product["minimum_stock"] %}
+
+                                <span class="low-stock-status">
+                                    LOW STOCK
+                                </span>
+
+                            {% else %}
+
+                                <span class="in-stock-status">
+                                    IN STOCK
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="no-data">
+
+            <h3>
+                No Inventory Data
+            </h3>
+
+            <p>
+                No products have been registered yet.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- =========================================
+         REPORT INFORMATION
+    ========================================== -->
+
+    <section class="product-list-section">
+
+        <h2>
+            Report Information
+        </h2>
+
+
+        <div class="purchase-info">
+
+
+            <div class="info-card">
+
+                <h3>
+                    Total Products
+                </h3>
+
+                <p>
+                    Number of different products currently
+                    registered in the inventory.
+                </p>
+
+            </div>
+
+
+
+            <div class="info-card">
+
+                <h3>
+                    Total Stock
+                </h3>
+
+                <p>
+                    Total number of units available across
+                    all registered products.
+                </p>
+
+            </div>
+
+
+
+            <div class="info-card">
+
+                <h3>
+                    Low Stock
+                </h3>
+
+                <p>
+                    Number of products whose current stock
+                    is at or below the minimum stock level.
+                </p>
+
+            </div>
+
+
+
+            <div class="info-card">
+
+                <h3>
+                    Inventory Value
+                </h3>
+
+                <p>
+                    Calculated using product price multiplied
+                    by the current available quantity.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+</body>
+
+</html>

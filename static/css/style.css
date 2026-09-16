@@ -1,0 +1,1076 @@
+/* ==============================
+   STOCKWISE - MAIN STYLESHEET
+   ============================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+}
+
+
+/* ==============================
+   NAVBAR
+   ============================== */
+
+.navbar {
+    height: 76px;
+    background: #1e3a8a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 55px;
+}
+
+.logo {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.navbar nav {
+    display: flex;
+    gap: 35px;
+}
+
+.navbar nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.navbar nav a:hover {
+    text-decoration: underline;
+}
+
+
+/* ==============================
+   HOME PAGE
+   ============================== */
+
+.hero {
+    min-height: 440px;
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.hero h1 {
+    font-size: 50px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 21px;
+    margin-bottom: 30px;
+}
+
+.hero button {
+    padding: 15px 32px;
+    border: none;
+    border-radius: 8px;
+    background: white;
+    color: #1e40af;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.hero button:hover {
+    background: #e5e7eb;
+}
+
+
+/* ==============================
+   MODULES
+   ============================== */
+
+.modules {
+    padding: 55px 8%;
+    text-align: center;
+}
+
+.modules h2 {
+    font-size: 32px;
+    margin-bottom: 40px;
+    color: #1f2937;
+}
+
+.module-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.module-card {
+    background: white;
+    padding: 30px 22px;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+    min-height: 150px;
+    transition: transform 0.2s;
+}
+
+.module-card:hover {
+    transform: translateY(-5px);
+}
+
+.module-card h3 {
+    color: #1d4ed8;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.module-card p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+
+/* ==============================
+   MODULE PAGE
+   ============================== */
+
+.page-section {
+    min-height: calc(100vh - 76px);
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.page-section h1 {
+    font-size: 38px;
+    color: #1f2937;
+    margin-bottom: 15px;
+}
+
+.page-section > p {
+    font-size: 18px;
+    color: #475569;
+    margin-bottom: 30px;
+}
+
+
+/* ==============================
+   FORM
+   ============================== */
+
+.form-card {
+    width: 620px;
+    max-width: 95%;
+    margin: 0 auto;
+    background: white;
+    padding: 35px 45px;
+    border-radius: 14px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.10);
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.form-card label {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 7px;
+    color: #334155;
+}
+
+.form-card input,
+.form-card select,
+.form-card textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 15px;
+    outline: none;
+}
+
+.form-card input:focus,
+.form-card select:focus,
+.form-card textarea:focus {
+    border-color: #2563eb;
+}
+
+
+/* ==============================
+   BUTTON
+   ============================== */
+
+.form-card button {
+    margin-top: 8px;
+    padding: 13px;
+    border: none;
+    border-radius: 7px;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.form-card button:hover {
+    background: #1d4ed8;
+}
+
+
+/* ==============================
+   SUCCESS MESSAGE
+   ============================== */
+
+.success-message {
+    margin: 20px auto;
+    padding: 14px 25px;
+    width: fit-content;
+    background: #dcfce7;
+    color: #166534;
+    border-radius: 7px;
+    font-weight: bold;
+}
+
+
+/* ==============================
+   TABLES
+   ============================== */
+
+.table-container {
+    width: 90%;
+    margin: 30px auto;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+th {
+    background: #1e3a8a;
+    color: white;
+    padding: 14px;
+}
+
+td {
+    padding: 13px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+tr:hover {
+    background: #f8fafc;
+}
+
+
+/* ==============================
+   ABOUT
+   ============================== */
+
+.about {
+    padding: 60px 10%;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.about p {
+    max-width: 800px;
+    margin: auto;
+    line-height: 1.8;
+    color: #64748b;
+}
+
+
+/* ==============================
+   RESPONSIVE
+   ============================== */
+
+@media (max-width: 900px) {
+
+    .module-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .navbar {
+        padding: 0 20px;
+    }
+
+    .navbar nav {
+        gap: 15px;
+    }
+
+    .logo {
+        font-size: 24px;
+    }
+
+    .module-container {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        font-size: 35px;
+    }
+
+    .form-card {
+        padding: 25px;
+    }
+
+}
+/* ==============================
+   INVENTORY REPORTS
+   ============================== */
+
+.report-summary {
+    width: 90%;
+    max-width: 1000px;
+    margin: 35px auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.summary-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+.summary-card h3 {
+    color: #1d4ed8;
+    margin-bottom: 12px;
+}
+
+.summary-card p {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1f2937;
+}
+
+
+.low-stock {
+    color: #dc2626;
+    font-weight: bold;
+}
+
+.in-stock {
+    color: #16a34a;
+    font-weight: bold;
+}
+
+
+@media (max-width: 700px) {
+
+    .report-summary {
+        grid-template-columns: 1fr;
+    }
+
+}
+/* ==============================
+   STOCKWISE DASHBOARD
+============================== */
+
+.dashboard-welcome {
+    text-align: center;
+    padding: 55px 20px 30px;
+}
+
+.dashboard-welcome h1 {
+    color: #21409a;
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.dashboard-welcome p {
+    color: #64748b;
+    font-size: 19px;
+}
+
+
+/* ==============================
+   DASHBOARD CARDS
+============================== */
+
+.dashboard {
+    padding: 20px;
+}
+
+.dashboard-cards {
+    max-width: 1100px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 25px;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 30px 20px;
+
+    border-radius: 14px;
+
+    text-align: center;
+
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-card h3 {
+    color: #64748b;
+    margin-bottom: 15px;
+}
+
+.dashboard-number {
+    font-size: 38px;
+    font-weight: bold;
+    color: #21409a;
+}
+
+
+/* ==============================
+   QUICK ACCESS
+============================== */
+
+.dashboard-modules {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.dashboard-modules h2 {
+    text-align: center;
+    font-size: 30px;
+    color: #21409a;
+    margin-bottom: 30px;
+}
+
+.quick-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.quick-links a {
+    background: white;
+
+    padding: 22px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    color: #21409a;
+
+    font-weight: bold;
+
+    text-align: center;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+    transition: 0.2s;
+}
+
+.quick-links a:hover {
+    transform: translateY(-3px);
+}
+
+
+/* ==============================
+   RESPONSIVE
+============================== */
+
+@media (max-width: 800px) {
+
+    .dashboard-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-links {
+        grid-template-columns: 1fr;
+    }
+
+}
+/* ==============================
+   PRODUCT MANAGEMENT
+============================== */
+
+.page-header {
+    text-align: center;
+    padding: 40px 20px 20px;
+}
+
+.page-header h1 {
+    color: #21409a;
+    font-size: 36px;
+    margin-bottom: 8px;
+}
+
+.page-header p {
+    color: #64748b;
+    font-size: 17px;
+}
+
+
+/* ==============================
+   MESSAGE
+============================== */
+
+.message-box {
+    max-width: 900px;
+    margin: 15px auto;
+    padding: 15px;
+
+    text-align: center;
+
+    background: #e8f5e9;
+    color: #2e7d32;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+}
+
+
+/* ==============================
+   FORM SECTION
+============================== */
+
+.form-section {
+    max-width: 950px;
+    margin: 25px auto;
+    padding: 30px;
+
+    background: white;
+
+    border-radius: 14px;
+
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+.form-section h2 {
+    text-align: center;
+    color: #21409a;
+    margin-bottom: 25px;
+}
+
+
+/* ==============================
+   FORM GRID
+============================== */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 7px;
+
+    font-weight: bold;
+
+    color: #334155;
+}
+
+.form-group input {
+    padding: 12px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 7px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: #21409a;
+}
+
+
+/* ==============================
+   FORM BUTTONS
+============================== */
+
+.form-buttons {
+    margin-top: 25px;
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 12px;
+}
+
+.form-buttons button {
+    padding: 12px 28px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #21409a;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.form-buttons button:hover {
+    opacity: 0.9;
+}
+
+.cancel-button {
+    padding: 12px 28px;
+
+    border-radius: 7px;
+
+    background: #64748b;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: bold;
+}
+
+
+/* ==============================
+   PRODUCT TABLE
+============================== */
+
+.product-list-section {
+    max-width: 1200px;
+
+    margin: 45px auto;
+
+    padding: 20px;
+}
+
+.product-list-section h2 {
+    text-align: center;
+
+    color: #21409a;
+
+    margin-bottom: 25px;
+}
+
+.table-container {
+    overflow-x: auto;
+
+    background: white;
+
+    border-radius: 12px;
+
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+.table-container table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.table-container th {
+    background: #21409a;
+
+    color: white;
+
+    padding: 14px;
+
+    text-align: center;
+}
+
+.table-container td {
+    padding: 13px;
+
+    text-align: center;
+
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.table-container tr:hover {
+    background: #f8fafc;
+}
+
+
+/* ==============================
+   ACTION BUTTONS
+============================== */
+
+.action-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+.edit-button {
+    padding: 7px 12px;
+
+    background: #21409a;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 5px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+}
+
+.edit-button:hover {
+    opacity: 0.85;
+}
+
+.delete-button {
+    padding: 7px 12px;
+
+    background: #c62828;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 5px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    opacity: 0.85;
+}
+
+
+/* ==============================
+   NO DATA
+============================== */
+
+.no-data {
+    text-align: center;
+
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 10px;
+
+    color: #64748b;
+}
+
+
+/* ==============================
+   MOBILE
+============================== */
+
+@media (max-width: 700px) {
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-section {
+        margin: 20px;
+    }
+
+    .product-list-section {
+        margin: 25px 10px;
+    }
+
+}
+/* ==============================
+   TRANSACTION HISTORY
+============================== */
+
+.transaction-type {
+    font-weight: bold;
+}
+
+.transaction-summary {
+    max-width: 1100px;
+    margin: 20px auto;
+}
+
+
+/* ==============================
+   DASHBOARD FIVE CARDS
+============================== */
+
+.dashboard-cards {
+    display: grid;
+
+    grid-template-columns: repeat(5, 1fr);
+
+    gap: 20px;
+}
+
+
+/* ==============================
+   TRANSACTION TABLE
+============================== */
+
+.transaction-table {
+    width: 100%;
+}
+
+
+/* ==============================
+   RESPONSIVE DASHBOARD
+============================== */
+
+@media (max-width: 1000px) {
+
+    .dashboard-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+    }
+
+}
+/* =========================================
+   GLOBAL NAVBAR
+========================================= */
+
+header {
+    width: 100%;
+
+    min-height: 70px;
+
+    background: #21409a;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 50px;
+
+    box-sizing: border-box;
+}
+
+
+/* STOCKWISE LOGO */
+
+.logo {
+    color: white;
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
+
+
+/* NAVIGATION */
+
+header nav {
+    display: flex;
+
+    align-items: center;
+
+    gap: 28px;
+}
+
+
+/* NAVIGATION LINKS */
+
+header nav a {
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    padding: 8px 4px;
+
+    transition: 0.2s;
+}
+
+
+/* HOVER */
+
+header nav a:hover {
+    color: #dbeafe;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   MOBILE NAVBAR
+========================================= */
+
+@media (max-width: 750px) {
+
+    header {
+
+        flex-direction: column;
+
+        padding: 18px 20px;
+
+        gap: 15px;
+
+    }
+
+
+    header nav {
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+        gap: 15px;
+
+    }
+
+}
+/* =========================================
+   LOW STOCK ALERT
+========================================= */
+
+.low-stock-status {
+
+    display: inline-block;
+
+    padding: 6px 12px;
+
+    border-radius: 6px;
+
+    background: #ffebee;
+
+    color: #c62828;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+}
+
+
+/* =========================================
+   LOW STOCK CARD
+========================================= */
+
+.low-stock-alert-card {
+
+    border-left: 5px solid #c62828;
+
+}
+/* =========================================
+   INVENTORY REPORTS
+========================================= */
+
+.inventory-value {
+
+    font-size: 26px;
+
+}
+
+
+/* =========================================
+   IN STOCK STATUS
+========================================= */
+
+.in-stock-status {
+
+    display: inline-block;
+
+    padding: 6px 12px;
+
+    border-radius: 6px;
+
+    background: #e8f5e9;
+
+    color: #2e7d32;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+}
+
+
+/* =========================================
+   LOW STOCK STATUS
+========================================= */
+
+.low-stock-status {
+
+    display: inline-block;
+
+    padding: 6px 12px;
+
+    border-radius: 6px;
+
+    background: #ffebee;
+
+    color: #c62828;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+}

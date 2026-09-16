@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Low Stock Alert - Stockwise</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         COMMON NAVBAR
+    ========================================== -->
+
+    {% include 'navbar.html' %}
+
+
+
+    <!-- =========================================
+         PAGE HEADER
+    ========================================== -->
+
+    <section class="page-header">
+
+        <h1>
+            Low-Stock Alert
+        </h1>
+
+        <p>
+            Products that have reached or fallen below
+            their minimum stock level.
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================================
+         ALERT SUMMARY
+    ========================================== -->
+
+    <section class="dashboard">
+
+        <div class="dashboard-cards">
+
+
+            <div class="dashboard-card">
+
+                <h3>
+                    Low-Stock Products
+                </h3>
+
+                <div class="dashboard-number">
+                    {{ products|length }}
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         LOW STOCK PRODUCTS
+    ========================================== -->
+
+    <section class="product-list-section">
+
+        <h2>
+            Products Requiring Attention
+        </h2>
+
+
+        {% if products %}
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Product ID
+                            </th>
+
+                            <th>
+                                Product Name
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Price
+                            </th>
+
+                            <th>
+                                Current Stock
+                            </th>
+
+                            <th>
+                                Minimum Stock
+                            </th>
+
+                            <th>
+                                Supplier
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for product in products %}
+
+                        <tr>
+
+
+                            <td>
+                                {{ product["product_id"] }}
+                            </td>
+
+
+                            <td>
+                                {{ product["product_name"] }}
+                            </td>
+
+
+                            <td>
+                                {{ product["category"] }}
+                            </td>
+
+
+                            <td>
+                                ₹{{ "%.2f"|format(product["price"]) }}
+                            </td>
+
+
+                            <td>
+                                {{ product["quantity"] }}
+                            </td>
+
+
+                            <td>
+                                {{ product["minimum_stock"] }}
+                            </td>
+
+
+                            <td>
+                                {{ product["supplier"] }}
+                            </td>
+
+
+                            <td>
+
+                                <span class="low-stock-status">
+                                    LOW STOCK
+                                </span>
+
+                            </td>
+
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        {% else %}
+
+
+            <div class="no-data">
+
+                <h3>
+                    ✓ Stock Levels Are Healthy
+                </h3>
+
+                <p>
+                    There are currently no products
+                    below their minimum stock level.
+                </p>
+
+            </div>
+
+
+        {% endif %}
+
+    </section>
+
+
+
+</body>
+
+</html>

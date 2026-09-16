@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Stockwise Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header>
+
+        <div class="logo">
+            STOCKWISE
+        </div>
+
+
+        <nav>
+
+            <a href="/">
+                Dashboard
+            </a>
+
+
+            <a href="{{ url_for('product_registration') }}">
+                Products
+            </a>
+
+
+            <a href="{{ url_for('supplier_management') }}">
+                Suppliers
+            </a>
+
+
+            <a href="{{ url_for('transaction_history') }}">
+                Transactions
+            </a>
+
+
+            <a href="{{ url_for('inventory_reports') }}">
+                Reports
+            </a>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- =========================================
+         DASHBOARD WELCOME
+    ========================================== -->
+
+    <section class="dashboard-welcome">
+
+        <h1>
+            Stockwise Dashboard
+        </h1>
+
+
+        <p>
+            Smart Inventory Management System
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================================
+         DASHBOARD SUMMARY
+    ========================================== -->
+
+    <section class="dashboard">
+
+        <div class="dashboard-cards">
+
+
+            <!-- TOTAL PRODUCTS -->
+
+            <div class="dashboard-card">
+
+                <h3>
+                    Total Products
+                </h3>
+
+
+                <div class="dashboard-number">
+
+                    {{ total_products }}
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TOTAL STOCK -->
+
+            <div class="dashboard-card">
+
+                <h3>
+                    Total Stock
+                </h3>
+
+
+                <div class="dashboard-number">
+
+                    {{ total_quantity }}
+
+                </div>
+
+            </div>
+
+
+
+            <!-- LOW STOCK -->
+
+            <div class="dashboard-card">
+
+                <h3>
+                    Low Stock
+                </h3>
+
+
+                <div class="dashboard-number">
+
+                    {{ low_stock_count }}
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TOTAL SUPPLIERS -->
+
+            <div class="dashboard-card">
+
+                <h3>
+                    Total Suppliers
+                </h3>
+
+
+                <div class="dashboard-number">
+
+                    {{ total_suppliers }}
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TOTAL TRANSACTIONS -->
+
+            <div class="dashboard-card">
+
+                <h3>
+                    Transactions
+                </h3>
+
+
+                <div class="dashboard-number">
+
+                    {{ total_transactions }}
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         QUICK ACCESS
+    ========================================== -->
+
+    <section
+        class="dashboard-modules"
+        id="modules"
+    >
+
+        <h2>
+            Quick Access
+        </h2>
+
+
+        <div class="quick-links">
+
+
+            <!-- PRODUCT REGISTRATION -->
+
+            <a href="{{ url_for('product_registration') }}">
+
+                Product Registration
+
+            </a>
+
+
+
+            <!-- SUPPLIER MANAGEMENT -->
+
+            <a href="{{ url_for('supplier_management') }}">
+
+                Supplier Management
+
+            </a>
+
+
+
+            <!-- PURCHASE ENTRY -->
+
+            <a href="{{ url_for('purchase_entry') }}">
+
+                Purchase Entry
+
+            </a>
+
+
+
+            <!-- STOCK UPDATE -->
+
+            <a href="{{ url_for('stock_update') }}">
+
+                Stock Update
+
+            </a>
+
+
+
+            <!-- SALES ENTRY -->
+
+            <a href="{{ url_for('sales_entry') }}">
+
+                Sales Entry
+
+            </a>
+
+
+
+            <!-- LOW STOCK ALERT -->
+
+            <a href="{{ url_for('low_stock_alert') }}">
+
+                Low-Stock Alert
+
+            </a>
+
+
+
+            <!-- INVENTORY REPORTS -->
+
+            <a href="{{ url_for('inventory_reports') }}">
+
+                Inventory Reports
+
+            </a>
+
+
+
+            <!-- TRANSACTION HISTORY -->
+
+            <a href="{{ url_for('transaction_history') }}">
+
+                Transaction History
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         ABOUT STOCKWISE
+    ========================================== -->
+
+    <section
+        class="about"
+        id="about"
+    >
+
+        <h2>
+            About Stockwise
+        </h2>
+
+
+        <p>
+
+            Stockwise is a smart inventory management
+            system designed to manage products, suppliers,
+            purchases, sales and stock levels efficiently.
+
+        </p>
+
+
+        <p>
+
+            The system provides real-time stock information,
+            low-stock alerts, inventory reports and
+            transaction history.
+
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+        <p>
+            © 2026 Stockwise Inventory Management System
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Transaction History - Stockwise</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        STOCKWISE
+    </div>
+
+    <nav>
+
+        <a href="/">Dashboard</a>
+
+        <a href="{{ url_for('product_registration') }}">
+            Products
+        </a>
+
+        <a href="{{ url_for('supplier_management') }}">
+            Suppliers
+        </a>
+
+        <a href="{{ url_for('transaction_history') }}">
+            Transactions
+        </a>
+
+        <a href="{{ url_for('inventory_reports') }}">
+            Reports
+        </a>
+
+    </nav>
+
+</header>
+
+
+<section class="page-header">
+
+    <h1>
+        Transaction History
+    </h1>
+
+    <p>
+        Track purchases, sales and stock adjustments
+    </p>
+
+</section>
+
+
+<section class="dashboard">
+
+    <div class="dashboard-cards">
+
+
+        <div class="dashboard-card">
+
+            <h3>
+                Total Transactions
+            </h3>
+
+            <div class="dashboard-number">
+                {{ total_transactions }}
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <h3>
+                Purchased Units
+            </h3>
+
+            <div class="dashboard-number">
+                {{ total_purchases }}
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <h3>
+                Sold Units
+            </h3>
+
+            <div class="dashboard-number">
+                {{ total_sales }}
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<section class="product-list-section">
+
+    <h2>
+        All Transactions
+    </h2>
+
+
+    {% if transactions %}
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Type</th>
+
+                    <th>Product ID</th>
+
+                    <th>Product Name</th>
+
+                    <th>Quantity</th>
+
+                    <th>Date & Time</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for transaction in transactions %}
+
+                <tr>
+
+                    <td>
+                        {{ transaction["transaction_id"] }}
+                    </td>
+
+                    <td>
+                        {{ transaction["transaction_type"] }}
+                    </td>
+
+                    <td>
+                        {{ transaction["product_id"] }}
+                    </td>
+
+                    <td>
+                        {{ transaction["product_name"] }}
+                    </td>
+
+                    <td>
+                        {{ transaction["quantity"] }}
+                    </td>
+
+                    <td>
+                        {{ transaction["transaction_date"] }}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    {% else %}
+
+        <p class="no-data">
+            No transactions recorded yet.
+        </p>
+
+    {% endif %}
+
+</section>
+
+
+</body>
+
+</html>
