@@ -137,6 +137,14 @@ def home():
     """).fetchone()[0]
 
 
+    # Product list for the STOCK AVAILABLE section
+    products = conn.execute("""
+        SELECT product_name, quantity, minimum_stock
+        FROM products
+        ORDER BY product_id
+    """).fetchall()
+
+
     conn.close()
 
 
@@ -151,7 +159,9 @@ def home():
 
         total_suppliers=total_suppliers,
 
-        total_transactions=total_transactions
+        total_transactions=total_transactions,
+
+        products=products
     )
 
 

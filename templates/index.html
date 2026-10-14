@@ -13,6 +13,714 @@
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
 
+    <style>
+
+        /* =========================================
+           DASHBOARD
+        ========================================== */
+
+        .dashboard-container {
+
+            width: 94%;
+
+            max-width: 1400px;
+
+            margin: 40px auto;
+        }
+
+
+        /* =========================================
+           FIVE STATISTICS IN ONE ROW
+        ========================================== */
+
+        .stats-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(5, 1fr);
+
+            gap: 20px;
+
+            margin-top: 30px;
+        }
+
+
+        .stat-card {
+
+            background: white;
+
+            padding: 25px 15px;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+
+            transition: 0.2s;
+
+            min-height: 100px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            box-sizing: border-box;
+        }
+
+
+        .stat-card:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+
+        .stat-card h3 {
+
+            margin: 0 0 12px 0;
+
+            color: #21409a;
+
+            font-size: 17px;
+
+            white-space: nowrap;
+        }
+
+
+        .stat-card p {
+
+            margin: 0;
+
+            font-size: 30px;
+
+            font-weight: bold;
+
+            color: #333;
+        }
+
+
+        /* =========================================
+           CLICKABLE CARDS
+        ========================================== */
+
+        .stock-card {
+
+            cursor: pointer;
+        }
+
+
+        .low-stock-card {
+
+            cursor: pointer;
+        }
+
+
+        .stock-card:hover {
+
+            box-shadow: 0 8px 25px rgba(33, 64, 154, 0.25);
+        }
+
+
+        .low-stock-card:hover {
+
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.20);
+        }
+
+
+        /* =========================================
+           LOW STOCK POPUP
+        ========================================== */
+
+        .low-stock-popup {
+
+            position: fixed;
+
+            top: 95px;
+
+            right: 25px;
+
+            width: 360px;
+
+            max-width: calc(100% - 50px);
+
+            background: white;
+
+            border-radius: 12px;
+
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.20);
+
+            border-left: 6px solid #dc2626;
+
+            z-index: 2000;
+
+            overflow: hidden;
+
+            animation: alertSlide 0.35s ease;
+        }
+
+
+        @keyframes alertSlide {
+
+            from {
+
+                opacity: 0;
+
+                transform: translateX(40px);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform: translateX(0);
+            }
+        }
+
+
+        .low-popup-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            background: #fef2f2;
+
+            padding: 15px 18px;
+
+            border-bottom: 1px solid #fecaca;
+        }
+
+
+        .low-popup-title {
+
+            color: #b91c1c;
+
+            font-size: 17px;
+
+            font-weight: bold;
+        }
+
+
+        .low-popup-close {
+
+            background: none;
+
+            border: none;
+
+            font-size: 25px;
+
+            color: #777;
+
+            cursor: pointer;
+
+            line-height: 1;
+        }
+
+
+        .low-popup-close:hover {
+
+            color: #dc2626;
+        }
+
+
+        .low-popup-body {
+
+            padding: 15px 18px;
+        }
+
+
+        .low-popup-item {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 10px 0;
+
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+
+        .low-popup-item:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .low-popup-product {
+
+            color: #333;
+
+            font-weight: 600;
+        }
+
+
+        .low-popup-minimum {
+
+            display: block;
+
+            color: #777;
+
+            font-size: 12px;
+
+            margin-top: 3px;
+        }
+
+
+        .low-popup-quantity {
+
+            color: #dc2626;
+
+            background: #fee2e2;
+
+            padding: 5px 9px;
+
+            border-radius: 6px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================================
+           STOCK OVERLAY
+        ========================================== */
+
+        .stock-overlay {
+
+            display: none;
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background: rgba(0, 0, 0, 0.35);
+
+            z-index: 999;
+        }
+
+
+        .stock-overlay.active {
+
+            display: block;
+        }
+
+
+        /* =========================================
+           STOCK SIDE PANEL
+        ========================================== */
+
+        .stock-side-panel {
+
+            position: fixed;
+
+            top: 0;
+
+            right: -450px;
+
+            width: 420px;
+
+            max-width: 90%;
+
+            height: 100%;
+
+            background: white;
+
+            z-index: 1000;
+
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.18);
+
+            transition: right 0.3s ease;
+
+            overflow-y: auto;
+
+            box-sizing: border-box;
+
+            padding: 30px;
+        }
+
+
+        .stock-side-panel.active {
+
+            right: 0;
+        }
+
+
+        /* =========================================
+           PANEL HEADER
+        ========================================== */
+
+        .stock-panel-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            padding-bottom: 18px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .stock-panel-header h2 {
+
+            margin: 0;
+
+            color: #21409a;
+
+            font-size: 24px;
+        }
+
+
+        .close-stock-panel {
+
+            border: none;
+
+            background: transparent;
+
+            font-size: 32px;
+
+            color: #555;
+
+            cursor: pointer;
+
+            line-height: 1;
+        }
+
+
+        .close-stock-panel:hover {
+
+            color: #dc2626;
+        }
+
+
+        /* =========================================
+           LOW STOCK ALERT ABOVE TABLE
+        ========================================== */
+
+        .low-stock-alert {
+
+            background: #fef2f2;
+
+            border: 1px solid #fecaca;
+
+            border-left: 5px solid #dc2626;
+
+            border-radius: 10px;
+
+            padding: 16px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .low-stock-alert-title {
+
+            color: #b91c1c;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            margin-bottom: 12px;
+        }
+
+
+        .alert-icon {
+
+            margin-right: 6px;
+        }
+
+
+        .low-stock-item {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 9px 0;
+
+            border-top: 1px solid #fee2e2;
+        }
+
+
+        .low-stock-item:first-of-type {
+
+            border-top: none;
+        }
+
+
+        .low-stock-item-name {
+
+            color: #7f1d1d;
+
+            font-weight: 600;
+        }
+
+
+        .low-stock-item-minimum {
+
+            display: block;
+
+            color: #991b1b;
+
+            font-size: 12px;
+
+            margin-top: 3px;
+        }
+
+
+        .low-stock-item-quantity {
+
+            color: #dc2626;
+
+            background: #fee2e2;
+
+            padding: 5px 9px;
+
+            border-radius: 6px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================================
+           STOCK TABLE
+        ========================================== */
+
+        .stock-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+
+        .stock-table th {
+
+            background: #21409a;
+
+            color: white;
+
+            padding: 13px;
+
+            text-align: left;
+
+            font-size: 15px;
+        }
+
+
+        .stock-table td {
+
+            padding: 14px 13px;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            font-size: 15px;
+        }
+
+
+        .stock-table tr:last-child td {
+
+            border-bottom: none;
+        }
+
+
+        .stock-table tr:hover {
+
+            background: #f8fafc;
+        }
+
+
+        /* =========================================
+           STOCK COLORS
+        ========================================== */
+
+        .normal-stock {
+
+            color: #15803d;
+
+            font-weight: bold;
+        }
+
+
+        .low-stock {
+
+            color: #dc2626;
+
+            font-weight: bold;
+        }
+
+
+        .no-stock {
+
+            text-align: center;
+
+            padding: 30px 10px;
+
+            color: #666;
+        }
+
+
+        /* =========================================
+           QUICK ACCESS
+        ========================================== */
+
+        .quick-access {
+
+            width: 94%;
+
+            max-width: 1100px;
+
+            margin: 50px auto;
+        }
+
+
+        .quick-access h2 {
+
+            text-align: center;
+
+            color: #21409a;
+
+            margin-bottom: 25px;
+        }
+
+
+        .quick-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 18px;
+        }
+
+
+        .quick-card {
+
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            text-align: center;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+
+            transition: 0.2s;
+        }
+
+
+        .quick-card:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.10);
+        }
+
+
+        .quick-card a {
+
+            text-decoration: none;
+
+            color: #21409a;
+
+            font-weight: bold;
+
+            font-size: 16px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 1100px) {
+
+            .stats-grid {
+
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+
+        @media (max-width: 800px) {
+
+            .stats-grid {
+
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+            .quick-grid {
+
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+
+        @media (max-width: 550px) {
+
+            .stats-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .quick-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .stock-side-panel {
+
+                width: 90%;
+
+                padding: 22px;
+            }
+
+
+            .low-stock-popup {
+
+                top: 80px;
+
+                right: 15px;
+
+                width: calc(100% - 30px);
+
+                max-width: none;
+            }
+        }
+
+    </style>
+
 </head>
 
 
@@ -20,58 +728,22 @@
 
 
     <!-- =========================================
-         HEADER
+         NAVBAR
     ========================================== -->
 
-    <header>
-
-        <div class="logo">
-            STOCKWISE
-        </div>
-
-
-        <nav>
-
-            <a href="/">
-                Dashboard
-            </a>
-
-
-            <a href="{{ url_for('product_registration') }}">
-                Products
-            </a>
-
-
-            <a href="{{ url_for('supplier_management') }}">
-                Suppliers
-            </a>
-
-
-            <a href="{{ url_for('transaction_history') }}">
-                Transactions
-            </a>
-
-
-            <a href="{{ url_for('inventory_reports') }}">
-                Reports
-            </a>
-
-        </nav>
-
-    </header>
+    {% include 'navbar.html' %}
 
 
 
     <!-- =========================================
-         DASHBOARD WELCOME
+         DASHBOARD HEADER
     ========================================== -->
 
-    <section class="dashboard-welcome">
+    <section class="page-header">
 
         <h1>
             Stockwise Dashboard
         </h1>
-
 
         <p>
             Smart Inventory Management System
@@ -82,28 +754,25 @@
 
 
     <!-- =========================================
-         DASHBOARD SUMMARY
+         STATISTICS
     ========================================== -->
 
-    <section class="dashboard">
+    <section class="dashboard-container">
 
-        <div class="dashboard-cards">
+        <div class="stats-grid">
 
 
             <!-- TOTAL PRODUCTS -->
 
-            <div class="dashboard-card">
+            <div class="stat-card">
 
                 <h3>
                     Total Products
                 </h3>
 
-
-                <div class="dashboard-number">
-
+                <p>
                     {{ total_products }}
-
-                </div>
+                </p>
 
             </div>
 
@@ -111,18 +780,16 @@
 
             <!-- TOTAL STOCK -->
 
-            <div class="dashboard-card">
+            <div class="stat-card stock-card"
+                 onclick="openStockPanel()">
 
                 <h3>
                     Total Stock
                 </h3>
 
-
-                <div class="dashboard-number">
-
+                <p>
                     {{ total_quantity }}
-
-                </div>
+                </p>
 
             </div>
 
@@ -130,18 +797,16 @@
 
             <!-- LOW STOCK -->
 
-            <div class="dashboard-card">
+            <div class="stat-card low-stock-card"
+                 onclick="showLowStockPopup()">
 
                 <h3>
                     Low Stock
                 </h3>
 
-
-                <div class="dashboard-number">
-
+                <p>
                     {{ low_stock_count }}
-
-                </div>
+                </p>
 
             </div>
 
@@ -149,37 +814,31 @@
 
             <!-- TOTAL SUPPLIERS -->
 
-            <div class="dashboard-card">
+            <div class="stat-card">
 
                 <h3>
                     Total Suppliers
                 </h3>
 
-
-                <div class="dashboard-number">
-
+                <p>
                     {{ total_suppliers }}
-
-                </div>
+                </p>
 
             </div>
 
 
 
-            <!-- TOTAL TRANSACTIONS -->
+            <!-- TRANSACTIONS -->
 
-            <div class="dashboard-card">
+            <div class="stat-card">
 
                 <h3>
                     Transactions
                 </h3>
 
-
-                <div class="dashboard-number">
-
+                <p>
                     {{ total_transactions }}
-
-                </div>
+                </p>
 
             </div>
 
@@ -187,6 +846,274 @@
         </div>
 
     </section>
+
+
+
+    <!-- =========================================
+         AUTOMATIC LOW STOCK POPUP
+    ========================================== -->
+
+    {% if low_stock_count > 0 %}
+
+    <div id="lowStockPopup"
+         class="low-stock-popup">
+
+
+        <div class="low-popup-header">
+
+            <span class="low-popup-title">
+
+                ⚠ LOW STOCK ALERT
+
+            </span>
+
+
+            <button class="low-popup-close"
+                    onclick="closeLowStockPopup()">
+
+                &times;
+
+            </button>
+
+        </div>
+
+
+
+        <div class="low-popup-body">
+
+
+            {% for product in products %}
+
+                {% if product['quantity'] <= product['minimum_stock'] %}
+
+                <div class="low-popup-item">
+
+                    <div>
+
+                        <span class="low-popup-product">
+
+                            {{ product['product_name'] }}
+
+                        </span>
+
+
+                        <span class="low-popup-minimum">
+
+                            Minimum stock:
+                            {{ product['minimum_stock'] }}
+
+                        </span>
+
+                    </div>
+
+
+                    <span class="low-popup-quantity">
+
+                        {{ product['quantity'] }} left
+
+                    </span>
+
+                </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+
+    <!-- =========================================
+         OVERLAY
+    ========================================== -->
+
+    <div id="stockOverlay"
+         class="stock-overlay"
+         onclick="closeStockPanel()">
+
+    </div>
+
+
+
+    <!-- =========================================
+         STOCK SIDE PANEL
+    ========================================== -->
+
+    <div id="stockSidePanel"
+         class="stock-side-panel">
+
+
+        <!-- HEADER -->
+
+        <div class="stock-panel-header">
+
+            <h2>
+                Stock Available
+            </h2>
+
+
+            <button class="close-stock-panel"
+                    onclick="closeStockPanel()">
+
+                &times;
+
+            </button>
+
+        </div>
+
+
+
+        <!-- =====================================
+             LOW STOCK ALERT ABOVE TABLE
+        ====================================== -->
+
+        {% if low_stock_count > 0 %}
+
+        <div class="low-stock-alert">
+
+
+            <div class="low-stock-alert-title">
+
+                <span class="alert-icon">
+                    ⚠
+                </span>
+
+                LOW STOCK ALERT
+
+            </div>
+
+
+
+            {% for product in products %}
+
+                {% if product['quantity'] <= product['minimum_stock'] %}
+
+                <div class="low-stock-item">
+
+                    <div>
+
+                        <span class="low-stock-item-name">
+
+                            {{ product['product_name'] }}
+
+                        </span>
+
+
+                        <span class="low-stock-item-minimum">
+
+                            Minimum stock:
+                            {{ product['minimum_stock'] }}
+
+                        </span>
+
+                    </div>
+
+
+                    <span class="low-stock-item-quantity">
+
+                        {{ product['quantity'] }} left
+
+                    </span>
+
+                </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- =====================================
+             STOCK TABLE
+        ====================================== -->
+
+        {% if products %}
+
+        <table class="stock-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Item
+                    </th>
+
+                    <th>
+                        Quantity
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for product in products %}
+
+                <tr>
+
+                    <td>
+
+                        {{ product['product_name'] }}
+
+                    </td>
+
+
+                    <td>
+
+                        {% if product['quantity'] <= product['minimum_stock'] %}
+
+                            <span class="low-stock">
+
+                                {{ product['quantity'] }}
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="normal-stock">
+
+                                {{ product['quantity'] }}
+
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        {% else %}
+
+        <div class="no-stock">
+
+            No products available.
+
+        </div>
+
+        {% endif %}
+
+
+    </div>
 
 
 
@@ -194,96 +1121,102 @@
          QUICK ACCESS
     ========================================== -->
 
-    <section
-        class="dashboard-modules"
-        id="modules"
-    >
+    <section class="quick-access">
 
         <h2>
             Quick Access
         </h2>
 
 
-        <div class="quick-links">
+        <div class="quick-grid">
 
 
-            <!-- PRODUCT REGISTRATION -->
+            <div class="quick-card">
 
-            <a href="{{ url_for('product_registration') }}">
+                <a href="{{ url_for('product_registration') }}">
 
-                Product Registration
+                    Product Registration
 
-            </a>
+                </a>
 
-
-
-            <!-- SUPPLIER MANAGEMENT -->
-
-            <a href="{{ url_for('supplier_management') }}">
-
-                Supplier Management
-
-            </a>
+            </div>
 
 
+            <div class="quick-card">
 
-            <!-- PURCHASE ENTRY -->
+                <a href="{{ url_for('supplier_management') }}">
 
-            <a href="{{ url_for('purchase_entry') }}">
+                    Supplier Management
 
-                Purchase Entry
+                </a>
 
-            </a>
-
-
-
-            <!-- STOCK UPDATE -->
-
-            <a href="{{ url_for('stock_update') }}">
-
-                Stock Update
-
-            </a>
+            </div>
 
 
+            <div class="quick-card">
 
-            <!-- SALES ENTRY -->
+                <a href="{{ url_for('purchase_entry') }}">
 
-            <a href="{{ url_for('sales_entry') }}">
+                    Purchase Entry
 
-                Sales Entry
+                </a>
 
-            </a>
-
-
-
-            <!-- LOW STOCK ALERT -->
-
-            <a href="{{ url_for('low_stock_alert') }}">
-
-                Low-Stock Alert
-
-            </a>
+            </div>
 
 
+            <div class="quick-card">
 
-            <!-- INVENTORY REPORTS -->
+                <a href="{{ url_for('stock_update') }}">
 
-            <a href="{{ url_for('inventory_reports') }}">
+                    Stock Update
 
-                Inventory Reports
+                </a>
 
-            </a>
+            </div>
 
 
+            <div class="quick-card">
 
-            <!-- TRANSACTION HISTORY -->
+                <a href="{{ url_for('sales_entry') }}">
 
-            <a href="{{ url_for('transaction_history') }}">
+                    Sales Entry
 
-                Transaction History
+                </a>
 
-            </a>
+            </div>
+
+
+            <div class="quick-card">
+
+                <a href="{{ url_for('low_stock_alert') }}">
+
+                    Low-Stock Alert
+
+                </a>
+
+            </div>
+
+
+            <div class="quick-card">
+
+                <a href="{{ url_for('inventory_reports') }}">
+
+                    Inventory Reports
+
+                </a>
+
+            </div>
+
+
+            <div class="quick-card">
+
+                <a href="{{ url_for('transaction_history') }}">
+
+                    Transaction History
+
+                </a>
+
+            </div>
 
 
         </div>
@@ -293,51 +1226,118 @@
 
 
     <!-- =========================================
-         ABOUT STOCKWISE
+         JAVASCRIPT
     ========================================== -->
 
-    <section
-        class="about"
-        id="about"
-    >
-
-        <h2>
-            About Stockwise
-        </h2>
+    <script>
 
 
-        <p>
+        /* =====================================
+           OPEN STOCK PANEL
+        ====================================== */
 
-            Stockwise is a smart inventory management
-            system designed to manage products, suppliers,
-            purchases, sales and stock levels efficiently.
+        function openStockPanel() {
 
-        </p>
+            document
+                .getElementById("stockSidePanel")
+                .classList
+                .add("active");
 
 
-        <p>
+            document
+                .getElementById("stockOverlay")
+                .classList
+                .add("active");
 
-            The system provides real-time stock information,
-            low-stock alerts, inventory reports and
-            transaction history.
 
-        </p>
+            document.body.style.overflow = "hidden";
 
-    </section>
+        }
 
 
 
-    <!-- =========================================
-         FOOTER
-    ========================================== -->
+        /* =====================================
+           CLOSE STOCK PANEL
+        ====================================== */
 
-    <footer>
+        function closeStockPanel() {
 
-        <p>
-            © 2026 Stockwise Inventory Management System
-        </p>
+            document
+                .getElementById("stockSidePanel")
+                .classList
+                .remove("active");
 
-    </footer>
+
+            document
+                .getElementById("stockOverlay")
+                .classList
+                .remove("active");
+
+
+            document.body.style.overflow = "";
+
+        }
+
+
+
+        /* =====================================
+           SHOW LOW STOCK POPUP
+        ====================================== */
+
+        function showLowStockPopup() {
+
+            const popup =
+                document.getElementById("lowStockPopup");
+
+
+            if (popup) {
+
+                popup.style.display = "block";
+
+            }
+
+        }
+
+
+
+        /* =====================================
+           CLOSE LOW STOCK POPUP
+        ====================================== */
+
+        function closeLowStockPopup() {
+
+            const popup =
+                document.getElementById("lowStockPopup");
+
+
+            if (popup) {
+
+                popup.style.display = "none";
+
+            }
+
+        }
+
+
+
+        /* =====================================
+           ESC KEY
+        ====================================== */
+
+        document.addEventListener("keydown", function(event) {
+
+            if (event.key === "Escape") {
+
+                closeStockPanel();
+
+                closeLowStockPopup();
+
+            }
+
+        });
+
+
+    </script>
 
 
 </body>
