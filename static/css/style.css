@@ -1074,3 +1074,38 @@ header nav a:hover {
     font-weight: bold;
 
 }
+
+.stockwise-header {
+    background: #21409a;
+    color: white;
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.stockwise-header .logo {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.stockwise-header nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+.stockwise-header nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.stockwise-header nav a:hover {
+    color: #dbeafe;
+    text-decoration: underline;
+}

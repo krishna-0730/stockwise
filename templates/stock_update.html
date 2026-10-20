@@ -1,221 +1,288 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Update - Stockwise</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        /* PAGE HEADING */
+        .page-header {
+            text-align: center;
+            padding: 40px 20px 25px;
+        }
+
+        .page-header h1 {
+            color: #21409a;
+            font-size: 38px;
+            margin: 0 0 10px;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        /* MESSAGE */
+        .message-box {
+            width: 90%;
+            max-width: 990px;
+            margin: 0 auto 20px;
+            padding: 14px 18px;
+            background: #eff6ff;
+            border-left: 5px solid #21409a;
+            border-radius: 8px;
+            color: #1e3a8a;
+        }
+
+        /* FORM CARD */
+        .form-section {
+            width: 90%;
+            max-width: 990px;
+            margin: 20px auto 45px;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 5px 22px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-section h2 {
+            text-align: center;
+            color: #21409a;
+            font-size: 25px;
+            margin: 0 0 28px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 46px;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #1f2937;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #21409a;
+            box-shadow: 0 0 0 3px rgba(33, 64, 154, 0.12);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 26px;
+        }
+
+        .submit-button {
+            min-width: 155px;
+            padding: 13px 24px;
+            border: none;
+            border-radius: 8px;
+            background: #21409a;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background: #17327d;
+        }
+
+        /* PROCESS SECTION */
+        .process-section {
+            width: 90%;
+            max-width: 990px;
+            margin: 0 auto 45px;
+        }
+
+        .process-section h2 {
+            text-align: center;
+            color: #21409a;
+            font-size: 24px;
+            margin-bottom: 25px;
+        }
+
+        .process-card {
+            background: #ffffff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+
+        .process-step {
+            margin-bottom: 18px;
+        }
+
+        .process-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .process-step strong {
+            display: block;
+            color: #1f2937;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .process-step p {
+            margin: 0;
+            color: #64748b;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 650px) {
+            .page-header {
+                padding: 30px 15px 20px;
+            }
+
+            .page-header h1 {
+                font-size: 30px;
+            }
+
+            .form-section {
+                width: 94%;
+                padding: 22px 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .process-section {
+                width: 94%;
+            }
+
+            .process-card {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
-
 
 <body>
 
-
-    <!-- =========================================
-         COMMON NAVBAR
-    ========================================== -->
-
     {% include 'navbar.html' %}
 
-
-
-    <!-- =========================================
-         PAGE HEADER
-    ========================================== -->
-
     <section class="page-header">
-
-        <h1>
-            Stock Update
-        </h1>
-
-        <p>
-            Manually update the current inventory quantity.
-        </p>
-
+        <h1>Stock Update</h1>
+        <p>Manually update the current inventory quantity.</p>
     </section>
 
-
-
-    <!-- =========================================
-         STOCK UPDATE FORM
-    ========================================== -->
+    {% if message %}
+        <div class="message-box">
+            {{ message }}
+        </div>
+    {% endif %}
 
     <section class="form-section">
+        <h2>Update Stock</h2>
 
-        <h2>
-            Update Stock
-        </h2>
+        <form action="{{ url_for('stock_update') }}" method="POST">
 
+            <div class="form-grid">
 
-        <form
-            action="{{ url_for('stock_update') }}"
-            method="POST"
-        >
+                <div class="form-group">
+                    <label for="product_id">Product ID</label>
+                    <input
+                        type="text"
+                        id="product_id"
+                        name="product_id"
+                        placeholder="Enter Product ID"
+                        required
+                    >
+                </div>
 
-
-            <!-- PRODUCT ID -->
-
-            <div class="form-group">
-
-                <label for="product_id">
-                    Product ID
-                </label>
-
-                <input
-                    type="text"
-                    id="product_id"
-                    name="product_id"
-                    placeholder="Enter Product ID"
-                    required
-                >
-
-            </div>
-
-
-
-            <!-- NEW QUANTITY -->
-
-            <div class="form-group">
-
-                <label for="new_quantity">
-                    New Quantity
-                </label>
-
-                <input
-                    type="number"
-                    id="new_quantity"
-                    name="new_quantity"
-                    placeholder="Enter New Quantity"
-                    min="0"
-                    required
-                >
+                <div class="form-group">
+                    <label for="new_quantity">New Quantity</label>
+                    <input
+                        type="number"
+                        id="new_quantity"
+                        name="new_quantity"
+                        placeholder="Enter New Quantity"
+                        min="0"
+                        step="1"
+                        required
+                    >
+                </div>
 
             </div>
 
-
-
-            <!-- BUTTON -->
-
-            <div class="form-buttons">
-
-                <button type="submit">
+            <div class="form-actions">
+                <button type="submit" class="submit-button">
                     Update Stock
                 </button>
-
             </div>
-
 
         </form>
-
-
-
-        <!-- =====================================
-             MESSAGE
-        ====================================== -->
-
-        {% if message %}
-
-            <div class="message-box">
-
-                {{ message }}
-
-            </div>
-
-        {% endif %}
-
-
     </section>
 
+    <section class="process-section">
+        <h2>Stock Update Process</h2>
 
+        <div class="process-card">
 
-    <!-- =========================================
-         INFORMATION
-    ========================================== -->
-
-    <section class="product-list-section">
-
-        <h2>
-            Stock Update Process
-        </h2>
-
-
-        <div class="purchase-info">
-
-
-            <div class="info-card">
-
-                <h3>
-                    1. Enter Product ID
-                </h3>
-
-                <p>
-                    Enter the ID of the product whose
-                    stock quantity needs to be updated.
-                </p>
-
+            <div class="process-step">
+                <strong>1. Enter Product ID</strong>
+                <p>Enter the ID of the product whose stock needs to be updated.</p>
             </div>
 
-
-
-            <div class="info-card">
-
-                <h3>
-                    2. Enter New Quantity
-                </h3>
-
-                <p>
-                    Enter the actual quantity currently
-                    available in the inventory.
-                </p>
-
+            <div class="process-step">
+                <strong>2. Enter New Quantity</strong>
+                <p>Enter the actual quantity currently available in inventory.</p>
             </div>
 
-
-
-            <div class="info-card">
-
-                <h3>
-                    3. Inventory Updated
-                </h3>
-
-                <p>
-                    The system replaces the existing
-                    quantity with the new quantity.
-                </p>
-
+            <div class="process-step">
+                <strong>3. Inventory Updated</strong>
+                <p>The existing quantity is replaced with the new quantity.</p>
             </div>
 
-
-
-            <div class="info-card">
-
-                <h3>
-                    4. Adjustment Recorded
-                </h3>
-
-                <p>
-                    The stock adjustment is automatically
-                    stored in Transaction History.
-                </p>
-
+            <div class="process-step">
+                <strong>4. Adjustment Recorded</strong>
+                <p>The stock adjustment is recorded in Transaction History.</p>
             </div>
-
 
         </div>
-
     </section>
 
-
-
 </body>
-
 </html>

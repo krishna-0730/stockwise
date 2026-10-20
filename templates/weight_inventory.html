@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight-Based Stock Count | Stockwise</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .weight-page {
+            max-width: 1150px;
+            margin: 35px auto;
+            padding: 20px;
+        }
+
+        .weight-header {
+            text-align: center;
+            margin: 15px 0 30px;
+        }
+
+        .weight-header h1 {
+            color: #21409a;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .weight-header p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .weight-card {
+            background: white;
+            border-radius: 14px;
+            padding: 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .weight-card h2 {
+            color: #21409a;
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .live-reading {
+            text-align: center;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 30px 15px;
+        }
+
+        .live-reading p {
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .weight-value {
+            font-size: 48px;
+            font-weight: bold;
+            color: #21409a;
+        }
+
+        .sensor-status {
+            margin-top: 10px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .weight-warning {
+            margin-top: 18px;
+            padding: 14px;
+            background: #fff7ed;
+            color: #9a3412;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+
+        .weight-form {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .weight-form .form-group {
+            margin-bottom: 18px;
+        }
+
+        .weight-form label {
+            display: block;
+            color: #334155;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .weight-form input,
+        .weight-form select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 15px;
+            background: white;
+        }
+
+        .calculation-box {
+            margin-top: 24px;
+            padding: 22px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .calculation-box p {
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .calculation-number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #21409a;
+            margin-bottom: 20px;
+        }
+
+        .weight-button {
+            border: none;
+            padding: 13px 22px;
+            border-radius: 7px;
+            background: #21409a;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .weight-button:hover {
+            opacity: 0.9;
+        }
+
+        .confirm-button {
+            background: #15803d;
+        }
+
+        .cancel-button {
+            background: #64748b;
+        }
+
+        .weight-message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background: #fee2e2;
+            color: #991b1b;
+            line-height: 1.6;
+        }
+
+        .weight-message.success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .confirmation-panel {
+            margin-top: 20px;
+            padding: 18px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+        }
+
+        .confirmation-panel p {
+            line-height: 1.6;
+            margin: 12px 0;
+        }
+
+        .confirmation-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            .weight-page {
+                padding: 12px;
+                margin: 15px auto;
+            }
+
+            .weight-card {
+                padding: 18px;
+            }
+
+            .weight-header h1 {
+                font-size: 29px;
+            }
+
+            .weight-value {
+                font-size: 38px;
+            }
+
+            .confirmation-actions .weight-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'navbar.html' %}
+
+    <main class="weight-page">
+
+        <section class="weight-header">
+            <h1>Weight-Based Stock Count</h1>
+            <p>
+                Measure one type of product at a time, calculate the number
+                of boxes or packets, and confirm before updating inventory.
+            </p>
+        </section>
+
+        {% if message %}
+        <div class="weight-message {% if success %}success{% endif %}">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <section class="weight-card">
+            <h2>Live ESP32 Weight</h2>
+
+            <div class="live-reading">
+                <p>Latest scale measurement</p>
+
+                <div id="liveWeight" class="weight-value">
+                    {% if latest_weight is not none %}
+                        {{ "%.1f"|format(latest_weight) }} g
+                    {% else %}
+                        -- g
+                    {% endif %}
+                </div>
+
+                <div id="sensorStatus" class="sensor-status">
+                    Waiting for ESP32 reading...
+                </div>
+            </div>
+
+            <div class="weight-warning">
+                Weigh only one product type at a time. Enter the weight
+                of one complete package and subtract the empty container
+                weight when needed.
+            </div>
+        </section>
+
+        <section class="weight-card">
+            <h2>Calculate Package Quantity</h2>
+
+            <form id="countForm" method="POST" class="weight-form">
+
+                <div class="form-group">
+                    <label for="product_id">Select Product</label>
+
+                    <select id="product_id" name="product_id" required>
+                        <option value="">-- Select a product --</option>
+
+                        {% for product in products %}
+                        <option value="{{ product['product_id'] }}">
+                            {{ product['product_name'] }}
+                            (Current stock: {{ product['quantity'] }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="unit_weight">
+                        Weight of One Box or Packet (grams)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="unit_weight"
+                        name="unit_weight"
+                        min="0.1"
+                        step="any"
+                        placeholder="Example: 250"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="tare_weight">
+                        Empty Container Weight (grams)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="tare_weight"
+                        name="tare_weight"
+                        min="0"
+                        step="any"
+                        value="0"
+                        required>
+                </div>
+
+                <div class="calculation-box">
+                    <p>Net product weight</p>
+                    <div id="netWeight" class="calculation-number">-- g</div>
+
+                    <p>Calculated complete packages</p>
+                    <div id="calculatedQuantity" class="calculation-number">--</div>
+
+                    <p>
+                        Package count = net weight divided by the weight
+                        of one package. Only complete packages are counted.
+                    </p>
+                </div>
+
+                <button type="button"
+                        id="previewButton"
+                        class="weight-button"
+                        style="margin-top: 22px;">
+                    Calculate and Review
+                </button>
+
+                <div id="confirmation" class="confirmation-panel hidden">
+                    <h3>Confirm Stock Update</h3>
+                    <p id="confirmationText"></p>
+                    <p>
+                        Confirm only after checking the product and
+                        calculated package count.
+                    </p>
+
+                    <div class="confirmation-actions">
+                        <button type="submit"
+                                class="weight-button confirm-button">
+                            Confirm Stock Update
+                        </button>
+
+                        <button type="button"
+                                id="cancelButton"
+                                class="weight-button cancel-button">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </section>
+
+    </main>
+
+    <script>
+        let currentWeight = null;
+        let previewSnapshot = null;
+
+        const liveWeight = document.getElementById("liveWeight");
+        const sensorStatus = document.getElementById("sensorStatus");
+        const unitWeightInput = document.getElementById("unit_weight");
+        const tareWeightInput = document.getElementById("tare_weight");
+        const productSelect = document.getElementById("product_id");
+        const netWeightElement = document.getElementById("netWeight");
+        const quantityElement = document.getElementById("calculatedQuantity");
+        const confirmation = document.getElementById("confirmation");
+        const confirmationText = document.getElementById("confirmationText");
+        const previewButton = document.getElementById("previewButton");
+        const cancelButton = document.getElementById("cancelButton");
+        const countForm = document.getElementById("countForm");
+
+        async function refreshWeight() {
+            try {
+                const response = await fetch("/api/weight", {
+                    cache: "no-store"
+                });
+
+                if (!response.ok) {
+                    throw new Error("Weight API unavailable");
+                }
+
+                const data = await response.json();
+
+                if (data.received && data.weight !== null) {
+                    currentWeight = Number(data.weight);
+                    liveWeight.textContent = currentWeight.toFixed(1) + " g";
+                    sensorStatus.textContent = "Reading received from ESP32";
+                    calculateQuantity();
+                } else {
+                    currentWeight = null;
+                    liveWeight.textContent = "-- g";
+                    sensorStatus.textContent = "Waiting for ESP32 reading";
+                    netWeightElement.textContent = "-- g";
+                    quantityElement.textContent = "--";
+                    confirmation.classList.add("hidden");
+                }
+            } catch (error) {
+                sensorStatus.textContent =
+                    "Cannot read sensor data. Check Flask and ESP32.";
+            }
+        }
+
+        function calculateQuantity() {
+            const unitWeight = Number(unitWeightInput.value);
+            const tareWeight = Number(tareWeightInput.value);
+
+            if (
+                currentWeight === null ||
+                !Number.isFinite(unitWeight) ||
+                !Number.isFinite(tareWeight) ||
+                unitWeight <= 0 ||
+                tareWeight < 0 ||
+                currentWeight < tareWeight
+            ) {
+                netWeightElement.textContent = "-- g";
+                quantityElement.textContent = "--";
+                return null;
+            }
+
+            const netWeight = currentWeight - tareWeight;
+            const quantity = Math.floor(netWeight / unitWeight);
+
+            netWeightElement.textContent = netWeight.toFixed(1) + " g";
+            quantityElement.textContent = quantity;
+
+            return {
+                weight: currentWeight,
+                unitWeight: unitWeight,
+                tareWeight: tareWeight,
+                netWeight: netWeight,
+                quantity: quantity,
+                productId: productSelect.value
+            };
+        }
+
+        previewButton.addEventListener("click", function () {
+            const calculation = calculateQuantity();
+
+            if (!productSelect.value) {
+                alert("Please select a product.");
+                return;
+            }
+
+            if (currentWeight === null) {
+                alert("No ESP32 reading is available yet.");
+                return;
+            }
+
+            if (!calculation || calculation.quantity < 1) {
+                alert("Enter valid weights and make sure at least one complete package is on the scale.");
+                return;
+            }
+
+            previewSnapshot = { ...calculation };
+
+            const productName =
+                productSelect.options[productSelect.selectedIndex].text;
+
+            confirmationText.textContent =
+                productName + ". Measured weight: " +
+                calculation.weight.toFixed(1) + " g. Net weight: " +
+                calculation.netWeight.toFixed(1) + " g. Calculated count: " +
+                calculation.quantity + " packages.";
+
+            confirmation.classList.remove("hidden");
+        });
+
+        cancelButton.addEventListener("click", function () {
+            previewSnapshot = null;
+            confirmation.classList.add("hidden");
+        });
+
+        unitWeightInput.addEventListener("input", function () {
+            previewSnapshot = null;
+            confirmation.classList.add("hidden");
+            calculateQuantity();
+        });
+
+        tareWeightInput.addEventListener("input", function () {
+            previewSnapshot = null;
+            confirmation.classList.add("hidden");
+            calculateQuantity();
+        });
+
+        productSelect.addEventListener("change", function () {
+            previewSnapshot = null;
+            confirmation.classList.add("hidden");
+        });
+
+        countForm.addEventListener("submit", function (event) {
+            const currentCalculation = calculateQuantity();
+
+            if (
+                !previewSnapshot ||
+                !currentCalculation ||
+                currentCalculation.quantity < 1 ||
+                currentCalculation.productId !== previewSnapshot.productId ||
+                currentCalculation.unitWeight !== previewSnapshot.unitWeight ||
+                currentCalculation.tareWeight !== previewSnapshot.tareWeight ||
+                currentCalculation.weight !== previewSnapshot.weight
+            ) {
+                event.preventDefault();
+                confirmation.classList.add("hidden");
+                alert("The scale reading or form values changed. Please calculate and review again.");
+                return;
+            }
+
+            if (!confirm(
+                "Confirm replacing the current stock with " +
+                previewSnapshot.quantity + " packages?"
+            )) {
+                event.preventDefault();
+            }
+        });
+
+        refreshWeight();
+        setInterval(refreshWeight, 1500);
+    </script>
+
+</body>
+</html>
+```
